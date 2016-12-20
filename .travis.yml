@@ -1,0 +1,35 @@
+sudo: required
+language: bash
+services:
+- docker
+env:
+  global:
+  - DOCKER_COMPOSE_VERSION=1.8.0
+  - ORG=${TRAVIS_REPO_SLUG%/*}
+  - REPO=${TRAVIS_REPO_SLUG##*-}
+  - TAG=${TRAVIS_TAG:-${TRAVIS_COMMIT:0:7}}
+before_install:
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv -f docker-compose /usr/local/bin
+install:
+- make -e build
+# script:
+# - make -e test
+# before_deploy:
+# - docker login -p "${QUAY_PASSWORD}" -u "${QUAY_USER}" quay.io
+# deploy:
+# - provider: script
+#   script: make -e publish
+#   skip_cleanup: true
+#   on:
+#     branch: master
+# - provider: script
+#   script: make -e publish
+ #  skip_cleanup: true
+#   on:
+#     tags: true
+# notifications:
+#   slack:
+#     secure: XtFSZqWhwopqwamSjvrPq/mu5PrBXSHd2YFonz7KvtEc4MkxwXaKd0U9dECKBMN9pWkt7GAWowPDDK2jZSn2+TZJAdcfVzplkCs/0392X5jTbM//xM/KjH48gwexJ5eGqj850ljA2lIugBuTWu+s7TsXiHOeSYNsoAc+tk+Y8aSX6ebci1lSQwdx/v/ySR3GJn/MTNE6TdVWo7MUH/ENdZctBRyHzLSdUokiAAEob3eSm78HGHTFRq8iWHvi+j2cBzycSOAObYfBsVisTklO+Q85Fwf8mYgxt19ZSgn3DD6znCbcOW9w4OlgD+cgY8WiCa01vGXSDG8H5miNeJC5j3+0VTWGSpYirZ+0mfL3VBxG+RCRWxjoeYD21Dnx48fS34BXOdyYthUe5MsUdBbEYHO9IFBecH1d93xpfoz3052azGeaPZWLZYNs+umr8LZrDFx3IAzGiK35rQMA6y6AbX6J1VAAArUuGr8RoxPpD7gQgsE37kcOKZEYl2uVqIEL5v6cSQCrCSTuIH+ON4Alxz48nCIq7751g3tpGeP5+svNd896358H+DBGA/Od96QSwIq4g9M7DiVzuf2tn81lbqD8oWEohrpfpnv+vbAvX9JV97u9tLQorrWApcetu+n2R4eQY5mhBa4IEE+yWe27A1YtJhE+NC1xuXGSYMh5t9s=
